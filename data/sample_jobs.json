@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1", "title": "Estagiário(a) em Desenvolvimento Back-end (Python)", "company": "Empresa Fictícia Alfa",
+    "location": "São Paulo, Brasil", "work_mode": "hibrida",
+    "summary": "VAGA FICTÍCIA. Apoio no desenvolvimento de APIs REST com Python e Flask, escrita de testes e documentação.",
+    "url": "https://example.com/demo/vaga-1", "published": "2026-10-12T09:00:00",
+    "tags": ["Python", "Flask", "Estágio"]
+  },
+  {
+    "id": "2", "title": "Estágio em Ciência de Dados", "company": "Empresa Fictícia Beta",
+    "location": "Remoto - Brasil", "work_mode": "remota",
+    "summary": "VAGA FICTÍCIA. Análise exploratória, dashboards e modelos simples de machine learning com pandas.",
+    "url": "https://example.com/demo/vaga-2", "published": "2026-10-11T14:30:00",
+    "tags": ["Data Science", "pandas", "Estágio"]
+  },
+  {
+    "id": "3", "title": "Data Engineering Intern", "company": "Empresa Fictícia Gama",
+    "location": "Campinas, Brasil", "work_mode": "presencial",
+    "summary": "VAGA FICTÍCIA. Construção de pipelines ETL com Spark e Airflow em um ambiente de Big Data.",
+    "url": "https://example.com/demo/vaga-3", "published": "2026-10-10T08:15:00",
+    "tags": ["Big Data", "ETL", "Internship"]
+  },
+  {
+    "id": "4", "title": "Estagiário de Desenvolvimento de Software Full Stack", "company": "Empresa Fictícia Delta",
+    "location": "Curitiba, Brasil", "work_mode": "hibrida",
+    "summary": "VAGA FICTÍCIA. Desenvolvimento de telas e serviços em equipe ágil, com acompanhamento de um mentor.",
+    "url": "https://example.com/demo/vaga-4", "published": "2026-10-09T17:45:00",
+    "tags": ["Software", "Full Stack", "Estágio"]
+  },
+  {
+    "id": "5", "title": "Estágio em Análise de Dados (Power BI)", "company": "Empresa Fictícia Épsilon",
+    "location": "Remoto - Brasil", "work_mode": "remota",
+    "summary": "VAGA FICTÍCIA. Criação de relatórios e indicadores com SQL e Power BI para áreas de negócio.",
+    "url": "https://example.com/demo/vaga-5", "published": "2026-10-08T10:00:00",
+    "tags": ["Análise de Dados", "SQL", "Power BI", "Estágio"]
+  },
+  {
+    "id": "6", "title": "Estagiário Python - Automação e RPA", "company": "Empresa Fictícia Zeta",
+    "location": "Belo Horizonte, Brasil", "work_mode": "presencial",
+    "summary": "VAGA FICTÍCIA. Automação de rotinas internas com Python, requests e BeautifulSoup.",
+    "url": "https://example.com/demo/vaga-6", "published": "2026-10-07T11:20:00",
+    "tags": ["Python", "RPA", "Estágio"]
+  },
+  {
+    "id": "7", "title": "Werkstudent Software Development", "company": "Empresa Fictícia Eta GmbH",
+    "location": "Berlin, Germany", "work_mode": "hibrida",
+    "summary": "VAGA FICTÍCIA. Estágio na Alemanha com foco em desenvolvimento de software e testes automatizados.",
+    "url": "https://example.com/demo/vaga-7", "published": "2026-10-06T09:30:00",
+    "tags": ["Software", "Werkstudent"]
+  },
+  {
+    "id": "8", "title": "Desenvolvedor(a) Python Sênior", "company": "Empresa Fictícia Theta",
+    "location": "Remoto - Worldwide", "work_mode": "remota",
+    "summary": "VAGA FICTÍCIA (não é estágio). Exemplo usado para mostrar o filtro 'somente estágio' funcionando.",
+    "url": "https://example.com/demo/vaga-8", "published": "2026-10-05T16:00:00",
+    "tags": ["Python", "Senior"]
+  }
+]

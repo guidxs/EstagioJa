@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <h1>Encontre estágios em tecnologia</h1>
+  <p>Consulta fontes externas de vagas, remove duplicatas, aplica seus filtros e permite exportar o resultado em CSV.</p>
+</section>
+
+{% if criteria.demo %}
+<div class="alert alert-demo" role="status">
+  <strong>Modo demonstração:</strong> as vagas abaixo são <strong>fictícias</strong> e não vêm de uma busca real.
+  Os links não levam a vagas verdadeiras.
+</div>
+{% endif %}
+
+<form class="card filters" id="search-form" method="get" action="{{ url_for('index') }}">
+  <input type="hidden" name="buscar" value="1">
+
+  <div class="field field-wide">
+    <label for="q">Cargo, tecnologia ou palavra-chave</label>
+    <input id="q" name="q" type="search" maxlength="80" value="{{ criteria.query }}"
+           placeholder="Ex.: python, dados, backend">
+  </div>
+
+  <div class="field">
+    <label for="area">Área</label>
+    <select id="area" name="area">
+      {% for key, label in area_options %}
+      <option value="{{ key }}" {% if criteria.area == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="modalidade">Modalidade</label>
+    <select id="modalidade" name="modalidade">
+      {% for key, label in mode_options %}
+      <option value="{{ key }}" {% if criteria.work_mode == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="local">Localização</label>
+    <input id="local" name="local" type="text" maxlength="60" value="{{ criteria.location }}"
+           placeholder="Ex.: Brasil, Germany, Berlin">
+  </div>
+
+  <div class="field field-checks">
+    <label class="check">
+      <input type="checkbox" name="estagio" value="1" {% if criteria.internship_only %}checked{% endif %}>
+      Somente estágio
+    </label>
+    <label class="check">
+      <input type="checkbox" name="demo" value="1" {% if criteria.demo %}checked{% endif %}>
+      Modo demonstração (dados fictícios)
+    </label>
+  </div>
+
+  <div class="field field-action">
+    <button class="btn btn-primary" type="submit" id="search-button">Buscar vagas</button>
+  </div>
+</form>
+
+<p class="loading" id="loading" hidden>Consultando as fontes de vagas, isso pode levar alguns segundos...</p>
+
+{% if not searched %}
+  <div class="card empty">
+    <h2>Pronto para buscar</h2>
+    <p>Escolha seus filtros e clique em <strong>Buscar vagas</strong>. Para uma apresentação sem depender da internet,
+       marque o <em>modo demonstração</em>.</p>
+  </div>
+
+{% else %}
+  <section class="stats" aria-label="Resumo da busca">
+    <div class="card stat"><span class="stat-value">{{ result.jobs|length }}</span><span class="stat-label">Vagas encontradas</span></div>
+    <div class="card stat"><span class="stat-value">{{ result.companies_count }}</span><span class="stat-label">Empresas listadas</span></div>
+    <div class="card stat"><span class="stat-value">{{ result.total_fetched }}</span><span class="stat-label">Vagas analisadas</span></div>
+    <div class="card stat"><span class="stat-value stat-small">{{ result.queried_at }}</span><span class="stat-label">Data da consulta</span></div>
+  </section>
+
+  <section class="card sources" aria-label="Fontes consultadas">
+    <h2>Fontes consultadas</h2>
+    <ul>
+      {% for s in result.statuses %}
+      <li class="{{ 'src-ok' if s.ok else 'src-error' }}">
+        <strong>
+          {% if s.credit_url %}<a href="{{ s.credit_url }}" target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{% else %}{{ s.name }}{% endif %}
+        </strong>
+        {% if s.ok %}
+          - {{ s.count }} vagas lidas{% if s.fetched_at %} (dados de {{ s.fetched_at }}{% if s.from_cache %}, do cache local{% endif %}){% endif %}
+          {% if s.message %}<span class="src-note">{{ s.message }}</span>{% endif %}
+        {% else %}
+          - indisponível no momento: {{ s.message }}
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  {% if result.all_failed %}
+    <div class="alert alert-error" role="alert">
+      <strong>Não foi possível consultar nenhuma fonte agora.</strong>
+      Verifique sua conexão e tente novamente em instantes. Você também pode usar o modo demonstração.
+    </div>
+
+  {% elif not result.jobs %}
+    <div class="card empty">
+      <h2>Nenhuma vaga encontrada</h2>
+      <p>Tente ampliar a busca: desmarque <em>Somente estágio</em>, escolha <em>Qualquer modalidade</em>,
+         limpe a localização ou use menos palavras-chave. As fontes têm poucas vagas de estágio no Brasil.</p>
+    </div>
+
+  {% else %}
+    <div class="results-head">
+      <h2>Resultados</h2>
+      <a class="btn btn-secondary" href="{{ export_url }}">Exportar CSV</a>
+    </div>
+
+    <section class="grid" aria-label="Lista de vagas">
+      {% for job in result.jobs %}
+      <article class="card job-card">
+        <div class="job-badges">
+          <span class="badge mode-{{ job.work_mode }}">{{ mode_labels[job.work_mode] }}</span>
+          {% if job.is_demo %}<span class="badge badge-demo">Fictício</span>{% endif %}
+        </div>
+        <h3>{{ job.title }}</h3>
+        <p class="company">{{ job.company }}</p>
+        <p class="meta">{{ job.location }}{% if job.published %} &middot; publicada em {{ job.published.strftime('%d/%m/%Y') }}{% endif %}</p>
+        <p class="summary">{{ job.summary }}</p>
+        <div class="job-footer">
+          <span class="source">Fonte: {{ job.source }}</span>
+          {% if job.is_demo %}
+            <span class="btn btn-disabled">Link fictício</span>
+          {% else %}
+            <a class="btn btn-primary" href="{{ job.url }}" target="_blank" rel="noopener noreferrer">Ver vaga original</a>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  <section class="card external" aria-label="Buscar em outras plataformas">
+    <h2>Buscar também em outras plataformas</h2>
+    <p>Abre a busca já preenchida com seus filtros, em uma nova aba. O EstágioJá não coleta
+       dados desses sites, pois eles não oferecem API pública.</p>
+    <div class="external-links">
+      {% for name, link in external_links %}
+      <a class="btn btn-secondary" href="{{ link }}" target="_blank" rel="noopener noreferrer">{{ name }}</a>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+{% endblock %}

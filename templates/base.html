@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}EstágioJá{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 12l6-6"></path>
+        </svg>
+        EstágioJá
+      </a>
+      <span class="topbar-tag">Automação de busca de estágios em tecnologia</span>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>
+      Projeto acadêmico de RPA com Python e Flask. Vagas fornecidas por
+      <a href="https://www.arbeitnow.com" target="_blank" rel="noopener noreferrer">Arbeitnow</a> e
+      <a href="https://remotive.com" target="_blank" rel="noopener noreferrer">Remotive</a>.
+      Sempre confira os detalhes na página original da vaga.
+    </p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
